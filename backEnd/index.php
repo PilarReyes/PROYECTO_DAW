@@ -23,13 +23,7 @@ session_start();
             </nav>
         <?php endif; ?>
     </header>
-    
-    <main>
-        <section>
-            <h2>Frases Motivadoras</h2>
-            <div id="fraseMotivadora">Cargando frase...</div>
-        </section>
-    </main>
+
     
     <footer>
         <p>&copy; 2024 Mi Bullet Journal Digital</p>

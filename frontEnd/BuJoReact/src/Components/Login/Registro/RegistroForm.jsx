@@ -17,32 +17,60 @@ export const RegistroForm = () => {
 
   const onError = (error) => {
     console.error("Error al registrar:", error);
-
   };
-  
+
   const handleFormSubmit = (e) => {
     e.preventDefault(); 
     handleSubmit(formData, onSuccess, onError); 
+  };
+
+  const handleNameChange = (e) => {
+    setFormData({ ...formData, nombre: e.target.value });
   };
 
   return (
     <>
       <h2>Registro de Usuario</h2>
       <form onSubmit={handleFormSubmit}>
-        <label>Nombre:</label>
-        <input type="text" name="nombre" value={formData.nombre} onChange={(e) => handleChange(e, formData, setFormData)} /><br />
+        <input 
+          type="text" 
+          id="nombre" 
+          name="nombre" 
+          value={formData.nombre} 
+          onChange={handleNameChange} 
+          placeholder="Ingrese su nombre" 
+        /><br />
 
-        <label>Usuario:</label>
-        <input type="text" name="usuario" value={formData.usuario} onChange={(e) => handleChange(e, formData, setFormData)} /><br />
+        <input 
+          type="text" 
+          id="usuario" 
+          name="usuario" 
+          value={formData.usuario} 
+          onChange={(e) => handleChange(e, formData, setFormData)} 
+          placeholder="Ingrese su usuario" 
+        /><br />
 
-        <label>Contraseña:</label>
-        <input type="password" name="password" value={formData.password} onChange={(e) => handleChange(e, formData, setFormData)} /><br />
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          value={formData.password} 
+          onChange={(e) => handleChange(e, formData, setFormData)} 
+          placeholder="Ingrese su contraseña" 
+        /><br />
 
-        <label>Email:</label>
-        <input type="email" name="email" value={formData.email} onChange={(e) => handleChange(e, formData, setFormData)} /><br />
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          value={formData.email} 
+          onChange={(e) => handleChange(e, formData, setFormData)} 
+          placeholder="Ingrese su email" 
+        /><br />
 
         <button type="submit">Registrar</button>
       </form>
     </>
   );
 };
+
