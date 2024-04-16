@@ -1,0 +1,49 @@
+/* estilosBienvenida.css */
+
+/* Estilos para el encabezado */
+.site-header {
+    background-color: #f2f2f2; /* Color de fondo */
+    padding: 20px 0; /* Espaciado interno superior e inferior */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+.container {
+    display: flex; /* Flexbox para alinear los elementos internos */
+    justify-content: space-between; /* Alinear los elementos a los extremos */
+    align-items: center; /* Centrar verticalmente los elementos */
+    max-width: 1200px; /* Ancho máximo */
+    margin: 0 auto; /* Centrar horizontalmente en la página */
+}
+
+.logo img {
+    height: 80px; /* Tamaño del logo */
+}
+
+.main-nav ul {
+    list-style-type: none; /* Quitar viñetas de la lista */
+    margin: 0; /* Quitar margen */
+    padding: 0; /* Quitar relleno */
+}
+
+.main-nav ul li {
+    display: inline-block; /* Mostrar elementos de la lista en línea */
+    margin-right: 20px; /* Espaciado entre elementos */
+}
+
+.main-nav ul li a {
+    color: #333333; /* Color del texto del enlace */
+    text-decoration: none; /* Quitar subrayado del enlace */
+    font-weight: bold; /* Negrita */
+    transition: color 0.3s; /* Transición suave del color */
+}
+
+.main-nav ul li a:hover {
+    color: #007bff; /* Cambiar color al pasar el ratón sobre el enlace */
+}
+
+.user-actions a {
+    color: #007bff; /* Color del texto de los enlaces */
+    text-decoration: none; /* Quitar subrayado */
+    margin-left: 20px; /* Espaciado entre enlaces */
+    font-weight: bold; /* Negrita */
+}

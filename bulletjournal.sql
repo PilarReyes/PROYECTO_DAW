@@ -60,11 +60,8 @@ CREATE TABLE `eventosespeciales` (
 
 CREATE TABLE `habitos` (
   `id` int(11) NOT NULL,
-  `id_usuario` int(11) DEFAULT NULL,
   `nombre` varchar(255) DEFAULT NULL,
   `descripcion` text DEFAULT NULL,
-  `fecha_inicio` date DEFAULT NULL,
-  `frecuencia` enum('diaria','semanal','mensual') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -87,7 +84,6 @@ CREATE TABLE `habitospredefinidos` (
 
 CREATE TABLE `historialmood` (
   `id` int(11) NOT NULL,
-  `id_usuario` int(11) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `estado_animo` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -101,7 +97,6 @@ CREATE TABLE `historialmood` (
 CREATE TABLE `historicohabitos` (
   `id` int(11) NOT NULL,
   `id_habito` int(11) DEFAULT NULL,
-  `id_usuario` int(11) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `completado` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -114,7 +109,6 @@ CREATE TABLE `historicohabitos` (
 
 CREATE TABLE `moodtracker` (
   `id` int(11) NOT NULL,
-  `id_usuario` int(11) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `estado_animo` enum('feliz','triste','estresado','sereno','motivado','cansado') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
