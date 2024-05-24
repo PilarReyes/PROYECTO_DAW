@@ -1,0 +1,292 @@
+/* Reset básico y configuraciones globales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Ajustes para asegurar que el contenido use toda la altura disponible y empuje el footer hacia abajo */
+html, body {
+    height: 100%; /* Ajustar la altura de la página completa */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilo de la cabecera y la barra lateral */
+.site-header{
+    background-image: url(images/Fondos/fondo2.jpg); 
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+} 
+.inspirational-quote {
+    font-size: 0.8em; /* Hace la letra más pequeña */
+    text-align: right; /* Alinea el texto a la derecha */
+   /* Espacio a la derecha para no pegarse al borde de la pantalla/contenedor */
+    color: orchid; /* Color del texto más suave */
+    font-style: italic; /* Estilo de la fuente en itálicas */
+    margin-left: 100px;
+  /* Espacio en la parte superior */
+}
+
+.sidebar {
+    background-image: url(images/Fondos/fondo8.jpg) !important;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/* Estilo de la marca */
+.brand {
+    font-size: 56px;
+    font-weight: bold;
+    color: orangered;
+    margin-left: 60px;
+}
+
+/* Estilos del contenedor */
+.container {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Estilos del logo */
+.logo img {
+    max-width: 100px;
+    height: auto;
+    width: auto;
+}
+
+/* Estilos para la imagen de perfil */
+.header-info2 img {
+    max-width: 50px;
+    height: auto;
+}
+
+/* Estilos de MetisMenu */
+.metismenu ul {
+    display: none;
+}
+
+.metismenu li {
+    list-style-type: none;
+    padding-left: 0;
+    margin-left: -40px;
+}
+
+.metismenu .show {
+    display: block;
+}
+
+.metismenu button, .metismenu a {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+}
+
+.metismenu a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.metismenu button:hover, .metismenu a:hover {
+    background-color: #f0f0f0;
+}
+
+/* Ajuste para que el contenido principal ocupe el espacio disponible */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px; /* Añadido para espaciado dentro del contenido principal */
+}
+
+.btn-date {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+#current-date {
+    margin: 0 10px;
+}
+
+
+
+/* Estilos para el contenedor del calendario */
+.calendar-wrapper {
+    font-family: Arial, sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: 220px;
+  }
+  
+  /* Estilos para el encabezado del calendario */
+  .calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  /* Estilos para los botones de navegación del mes */
+  .calendar-header button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  /* Estilo para los días del mes */
+  .day {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin: 2px;
+    cursor: pointer;
+  }
+  
+  .prev-month, .next-month {
+    color: #ccc;
+  }
+
+
+#calendar {
+    width: 80%; /* O el ancho que prefieras */
+    height: 350px; /* O la altura que prefieras */
+    margin: auto; /* Centra el calendario horizontalmente si lo deseas */
+    margin-left: -25px;
+  }
+  
+  .dashboard-container {
+    display: flex; /* Utilizamos flexbox para colocar los elementos uno al lado del otro */
+}
+
+#calendar {
+    flex: 1; /* El calendario ocupará el espacio disponible */
+    margin-right: 10px; /* Margen derecho para separar el calendario del clima */
+}
+
+#weather-container {
+    flex: 0 0 70px; /* El contenedor del clima tendrá un ancho fijo de 200px */
+}
+
+#main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra los elementos horizontalmente */
+  }
+  
+  .widget-box {
+    border: 1px solid #000;
+    border-radius: 4px; /* Añade bordes redondeados */
+    padding: 10px;
+    margin-top: 20px; /* Asegura espacio entre cada caja */
+    width: calc(100% - 20px); /* O un porcentaje específico para un ancho más grande que el clima */
+    box-sizing: border-box; /* Asegura que el padding y el borde se incluyan en el ancho total */
+  }
+  
+  /* Ajusta el tamaño del contenedor del clima si es necesario */
+  #weather-container {
+    max-width: 90%; /* Ajusta este valor según sea necesario */
+  }
+  
+  /* Aplica el mismo estilo a las cajas de tareas y agradecimientos para uniformidad */
+  #tasksContainer, #thanksContainer {
+    max-width: 95%; /* Haz estas cajas un poco más grandes que el contenedor del clima */
+  }
+  
+  .widget-box h3 {
+    margin: 0;
+    font-size: 14px; /* O el tamaño que mejor se adapte a tu diseño */
+  }
+  
+  .widget-box {
+    flex: 0 0 100px;
+    font-size: 14px; /* Aplica el tamaño de fuente a todo el contenido de la caja */
+  }
+  
+  /* Estilos para los botones, para hacerlos parecer como en la imagen */
+  .widget-box button {
+    margin-top: 20px;
+    font-size: 24px; /* Ajusta este tamaño para que el botón + se vea como deseas */
+    line-height: 1; /* Ajusta la altura de línea para centrar el + si es necesario */
+  }
+  
+  
+  .list-container {
+    display: none; /* Inicialmente oculto hasta que se agregue contenido */
+    width: 100%;
+  }
+  
+  /* Puedes necesitar más estilos para adaptar tu diseño, como márgenes, colores y tamaños de fuente */
+ 
+
+  .new-item-input {
+    width: 100%;
+    padding: 0.5em;
+    margin-top: 0.5em;
+    font-size: 1em; /* O el tamaño que prefieras */
+    border: 1px solid #ccc; /* Un borde para que sea visible */
+    box-sizing: border-box;
+}
+
+
+/* Ajustes en el footer para asegurarse de que siempre esté en la parte inferior */
+.footer {
+    background-image: url(images/Fondos/fondo.jpg) !important;
+    padding: 20px; /* Asume que deseas mantener este padding a menos que py-3 sea suficiente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto; /* Esto ayuda a mantener el footer en la parte inferior */
+}
+
+#calendar {
+  width: 100%;
+  max-width: 100%;
+  overflow: auto; /* Permite el desplazamiento si el contenido es demasiado grande */
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+/* Asegurar que los botones y la tabla no desborden */
+#calendar table {
+  width: 100%;
+  table-layout: fixed; /* Hace que las tablas ocupen todo el ancho disponible */
+}
+
+#calendar .btn {
+  white-space: nowrap; /* Evita que los botones se desborden */
+}
+
+
+.bg-success {
+  background-color: green !important;
+}
+
+.bg-danger {
+  background-color: red !important;
+}
+
+#historialHabitos {
+  border: 1px solid red; /* Esto es solo temporal para ver el contenedor */
+  padding: 10px;
+}
+

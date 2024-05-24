@@ -1,0 +1,108 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%; /* Ajustar la altura de la página completa */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilo de la cabecera y la barra lateral */
+.site-header{
+    background-image: url(images/Fondos/fondo2.jpg); 
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+} 
+
+
+.brand {
+    font-size: 56px;
+    font-weight: bold;
+    color: orangered;
+    margin-left: 60px;
+  
+}
+
+
+.container {
+    width: 100%; /* Asegúrate de que el contenedor tenga el ancho completo */
+    display: flex;
+    justify-content: space-between; /* Distribuye los elementos */
+    align-items: center;
+}
+
+.logo img {
+    max-width: 100px;
+    width: auto;
+    height: auto;
+    /* El logo se mantiene alineado con el flujo normal del documento */
+}
+
+
+/* Contenedor para las acciones de usuario como login y registro */
+.user-actions {
+    display: flex; /* Asegura que login y registro estén uno al lado del otro */
+    gap: 20px; /* Espacio entre los botones de login y registro */
+}
+
+.header-info2 img {
+    max-width: 50px; /* Ancho máximo */
+    height: auto; /* Altura automática para mantener la proporción */
+}
+.user-actions a, .user-actions .dropdown {
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Estilos para el botón de login y registro */
+.action-button {
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none; /* Elimina subrayado de los enlaces */
+    border-radius: 5px; /* Bordes redondeados para los botones */
+    cursor: pointer; /* Cursor de mano al pasar el ratón sobre los botones */
+}
+
+.action-button:hover {
+    background-color: #0056b3; /* Cambio de color al pasar el ratón */
+}
+
+/* Ajustes para el dropdown del perfil */
+.header-profile2 {
+    display: block;
+    /* Añadir estilos para el menú de perfil aquí si es necesario */
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1000;
+}
+
+.header-profile2:hover .dropdown-menu,
+.header-profile2:focus-within .dropdown-menu {
+    display: block;
+}
+
+/* Ajustes en el footer para asegurarse de que siempre esté en la parte inferior */
+.footer {
+    background-image: url(images/Fondos/fondo.jpg) !important;
+    padding: 20px; /* Asume que deseas mantener este padding a menos que py-3 sea suficiente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto; /* Esto ayuda a mantener el footer en la parte inferior */
+}

@@ -1,0 +1,53 @@
+/* Estilos generales para el perfil */
+.profile-section {
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 0 10px #ccc;
+}
+
+.form-control {
+    margin-bottom: 10px;
+}
+
+/* Estilo para la imagen de fondo del perfil */
+.background-image {
+    width: 80%; /* Ocupa todo el ancho disponible */
+    height: 150px; /* Altura fija */
+    object-fit: cover; /* Asegura cobertura completa sin distorsionar */
+    position: absolute; /* Posición absoluta para permitir sobreposición */
+    top: 0;
+    left: 0;
+    z-index: -1; /* Coloca la imagen detrás del contenido del perfil */
+}
+
+/* Estilo para el avatar de perfil */
+.profile-image {
+    width: 70px;  /* Tamaño más pequeño para el avatar */
+    height: 70px; /* Redondo */
+    object-fit: cover; /* Cubre el espacio completamente */
+    border: 2px solid white; /* Borde blanco para destacar sobre fondos */
+}
+
+/* Contenedor para la imagen y el texto del perfil */
+.profile-pic {
+    display: flex;
+    align-items: center; /* Alineación vertical */
+    gap: 10px; /* Espacio entre la imagen y el texto */
+    padding: 10px; /* Espaciado interno */
+    background: rgba(255, 255, 255, 0.8); /* Fondo semitransparente para mejorar la legibilidad */
+    border-radius: 10px; /* Bordes redondeados */
+    margin-top: 130px; /* Espacio desde la parte superior para no solapar la foto de portada */
+}
+
+.profile-info2 {
+    flex-grow: 1;
+    font-size: 1rem;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .profile-pic {
+        flex-direction: row; /* Alineación horizontal en dispositivos móviles */
+    }
+}
