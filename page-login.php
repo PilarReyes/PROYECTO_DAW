@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="author" content="InnerSync">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/estiloLogo.css?v=<?=date("YmdHis", time());?>">
+    <!--<link rel="stylesheet" href="./css/estiloLogo.css?v=<?=date("YmdHis", time());?>">-->
     <link rel="shortcut icon" type="../image/png" href="../images/favicon.png">
     <link href="vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
-    <link class="main-css" href="css/style.css" rel="stylesheet">
+    <link class="main-css" href="./css/style.css" rel="stylesheet">
 </head>
 
 <body>

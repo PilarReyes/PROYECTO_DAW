@@ -40,7 +40,7 @@ session_start();
         </div>
     </footer>
     
-<script src="index_content.js"></script>
+<!--<script src="index_content.js"></script>-->
 <script src="js/customHook.js?<?=date("YmdHis");?>"></script>
 </body>
 </html>
