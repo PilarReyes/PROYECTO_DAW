@@ -2,13 +2,12 @@
 <html lang="es">
 
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="author" content="InnerSync">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	
-	<link rel="shortcut icon" type="../image/png" href="../images/favicon.png">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="author" content="InnerSync">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/estiloLogo.css?v=<?=date("YmdHis", time());?>">
+    <link rel="shortcut icon" type="../image/png" href="../images/favicon.png">
     <link href="vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
     <link class="main-css" href="css/style.css" rel="stylesheet">
 </head>
@@ -20,8 +19,8 @@
                 <div class="col-lg-5 col-md-6">
                     <div class="card mb-0 h-auto">
                         <div class="card-body">
-                            <div class="text-center mb-3">
-                                <a href="index.php"><img class="logo-auth" src="images/logo.png" alt=""></a>
+                            <div id="logo" class="text-center mb-3">
+                                <a href="index.php"><img class="logo-auth" src="images/logo2.png" alt="" style="border-radius:50%;"></a>
                             </div>
                             <h4 class="text-center mb-4">Inicia sesión en tu cuenta</h4>
                             <form id="login">
@@ -37,19 +36,11 @@
                                         <i class="fa fa-eye"></i>
                                     </span>
                                 </div>
-                                <div class="form-row d-flex flex-wrap justify-content-between mb-2">
-                                    <div class="form-group mb-sm-4 mb-1">
-                                        <div class="form-check custom-checkbox ms-1">
-                                            <input type="checkbox" class="form-check-input" id="basic_checkbox_1">
-                                            <label class="form-check-label" for="basic_checkbox_1">Recordar mis preferencias</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group ms-2">
-                                        <a class="text-hover" href="page-forgot-password.html">¿Olvidaste tu contraseña?</a>
-                                    </div>
-                                </div>
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
+                                    <button type="submit" id="boton-login" class="btn btn-primary btn-block">Iniciar sesión</button>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <a href="index.php" class="btn btn-block" style="background-color: white; color: #FF4500; border: 1px solid #FF4500;">Volver al inicio</a>
                                 </div>
                             </form>
                             <div class="new-account mt-3">
@@ -62,18 +53,12 @@
         </div>
     </div>
 
-
-    <!--**********************************
-        Scripts
-    ***********************************-->
-    <!-- Vendedores requeridos -->
-	
     <script src="vendor/global/global.min.js"></script>
-	<script src="vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="js/custom.min.js"></script>
     <script src="js/dlabnav-init.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/customHook.js?<?=date("YmdHis");?>"></script>
-    
+
 </body>
 </html>

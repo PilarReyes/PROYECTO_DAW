@@ -8,8 +8,7 @@ $("#login").submit(function(e) {
         cache: false,
         processData:false,
         beforeSend : function() {
-            //$("#boton-login").prop("disabled",true);
-            //$("#boton-login").html('<i class="fas fa-spinner fa-pulse"></i> Espera por favor...');
+            $("#boton-login").prop("disabled",true);
         },
         success: function(respuesta) {
             Swal.fire('¡Perfecto!', "Has iniciado sesión correctamente. Ahora te redirigiremos a la página principal", "success").then(
@@ -37,8 +36,7 @@ $("#login").submit(function(e) {
             Swal.fire('Error al iniciar sesión', desc, tipo);
         },
         complete : function() {
-           // $("#boton-login").html(tagBoton);
-            // $("#boton-login").prop("disabled",false);
+            $("#boton-login").prop("disabled",false);
         },
     });
 });
@@ -54,6 +52,7 @@ $("#register").submit(function(e) {
         processData:false,
         beforeSend : function() {
             //$('#boton-registro').prop('disabled', true).text('Registrando...');
+            $("#boton-login").prop("disabled",true);
         },
         success: function(respuesta) {
             Swal.fire('¡Perfecto!', 'Te has registrado correctamente. Ahora puedes iniciar sesión con tus datos.', 'success').then(
@@ -79,55 +78,54 @@ $("#register").submit(function(e) {
         },
         complete : function() {
             //$('#boton-registro').prop('disabled', false).html('Registrarse');
+            $("#boton-login").prop("disabled",false);
         },
     });
 });
 
-$("#formPerfil").submit(function(e) {
-    e.preventDefault();
-    $.ajax({
-        url: "models/modificarPerfil.php",
-        type: "post",
-        data : new FormData(this),
-        contentType: false,
-        cache: false,
-        processData:false,
-        beforeSend : function() {
-           $("#botonActualizar").prop("disabled", true);
-        },
-        success : function(respuesta) { 
-            Swal.fire('¡Perfil Actualizado!', "Tu perfil ha sido actualizado correctamente.", "success").then(
-            function() {
-                 location.reload();
-            });
-        },
-        error : function(respuesta) {
-            let tipo = "error";
-            let desc = "";
-            switch(respuesta.status) {
-                case 400:
-                    desc = "<p>Introduce el campo que quieres modificar.</p>";
-                    break;
-                case 401:
-                    desc = "<p>Contraseña actual incorrecta.</p>";
-                    break;
-                case 403:
-                    desc = "<p>Acceso denegado.</p>";
-                    break;
-                case 404:
-                    desc = "<p>La contraseñas nuevas no coinciden.</p>";
-                    break;
-                default:
-                    desc = "<p>Ocurrió un error desconocido.</p><p>Inténtalo de nuevo más tarde.</p>";
-                    break;
+//cambiar contraseña
+document.addEventListener('DOMContentLoaded', function() {
+    // Manejar clic en el botón para cambiar la contraseña usando jQuery 'on' para delegar el evento
+    $(document).on('click', '#botonCambiarContrasena', function() {
+        $('#modalCambiarContrasena').modal('show');
+    });
+
+    // Manejar el formulario de cambiar contraseña usando jQuery 'on' para delegar el evento
+    $(document).on('submit', '#formCambiarContrasena', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: 'models/modificarPerfil.php',
+            type: 'post',
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#modalCambiarContrasena').modal('hide');
+                Swal.fire('¡Perfecto!', response, 'success');
+            },
+            error: function(xhr) {
+                let tipo = "error";
+                let desc = "";
+                switch(xhr.status) {
+                    case 400:
+                        desc = "Todos los campos son obligatorios.";
+                        break;
+                    case 401:
+                        desc = "Contraseña actual incorrecta.";
+                        break;
+                    case 404:
+                        desc = "Las nuevas contraseñas no coinciden.";
+                        break;
+                    case 500:
+                    default:
+                        desc = "Ocurrió un error desconocido. Inténtalo de nuevo más tarde.";
+                        break;
+                }
+                Swal.fire('Error', desc, tipo);
             }
-            Swal.fire('Error al actualizar los datos', desc, tipo);
-        },
-        complete : function() {
-           $("#botonActualizar").prop("disabled", false);
-        },
+        });
     });
 });
+
+
 
 //crear tarea
 $(document).ready(function() {
@@ -805,9 +803,17 @@ $(document).on("submit", "#form-habitos", function(e) {
     console.log("Formulario de hábitos enviado");
 
     var formData = new FormData(this);
+    var hasHabitos = false;
     formData.forEach(function(value, key) {
         console.log(key + ": " + value);
+        if (key === 'habitos_seleccionados[]') {
+            hasHabitos = true;
+        }
     });
+
+    if (!hasHabitos) {
+        console.log("No se han seleccionado hábitos.");
+    }
 
     $.ajax({
         url: "models/procesarSeleccionHabitos.php",
@@ -821,11 +827,15 @@ $(document).on("submit", "#form-habitos", function(e) {
             $("#btnGuardar").prop("disabled", true);
         },
         success: function(respuesta) {
-            Swal.fire('¡Perfecto!', 'Los habitos se han guardado correctamente.', 'success').then(function() {
+            console.log("Respuesta del servidor: ", respuesta);
+            Swal.fire('¡Perfecto!', 'Los hábitos se han guardado correctamente.', 'success').then(function() {
                 location.reload();
             });
         },
-        error: function() {
+        error: function(xhr, status, error) {
+            console.log("Error en la solicitud AJAX");
+            console.log("Estado: ", status);
+            console.log("Error: ", error);
             Swal.fire('Error', 'Error al guardar los hábitos.', 'error');
         },
         complete: function() {
@@ -834,6 +844,7 @@ $(document).on("submit", "#form-habitos", function(e) {
         },
     });
 });
+
 
 //Guardar habitos
 $(document).ready(function() {
@@ -1030,7 +1041,7 @@ $(document).ready(function() {
 
 // guardar estado de animo
 $(document).ready(function(){
-    console.log("Document de mood cargado");
+    //console.log("Document de mood cargado");
 
     $(document).on('submit', '#moodTracker', function(e) {
         console.log("Formulario moodTracker submit");
@@ -1061,7 +1072,7 @@ $(document).ready(function(){
 
 
 //Mood Tracker
-$(document).ready(function() {
+/*$(document).ready(function() {
     console.log("Documento listo y cargando...");
 
     // Verificar IDs de elementos HTML
@@ -1130,12 +1141,22 @@ $(document).ready(function() {
             success: function(response) {
                 console.log("Respuesta del servidor: ", response);
 
-                // Inserta el contenido en el div
-                $("#bloqueIntervaloMood").addClass("d-none");
-                $("#historialMood").html(response);
-                
-                // Agrega un mensaje de depuración para verificar la inserción
-                console.log("Contenido insertado en #historialMood");
+                // Verificar si el contenido se está insertando correctamente
+                if (response.trim() === "") {
+                    console.error("La respuesta del servidor está vacía.");
+                } else {
+                    console.log("Contenido recibido, insertando en #historialMood.");
+                    $("#bloqueIntervaloMood").addClass("d-none");
+                    $("#historialMood").html(response);
+
+                    // Esperar un poco para asegurar que el DOM se actualiza
+                    setTimeout(function() {
+                        console.log("Contenido después de la inserción:", $("#historialMood").html());
+                        $("#historialMood").removeClass("d-none"); // Asegurarse de que el div sea visible
+                    }, 1000);
+
+                    console.log("Contenido insertado en #historialMood.");
+                }
             },
             error: function(xhr, status, error) {
                 console.error("Error en la solicitud AJAX: ", status, error);
@@ -1144,5 +1165,192 @@ $(document).ready(function() {
         });
 
         console.log("Solicitud AJAX enviada...");
+    });
+});*/
+
+
+$(document).ready(function() {
+    //console.log("Documento listo y cargando...");
+
+    // Verificar IDs de elementos HTML
+    /*console.log("Verificando IDs de elementos HTML...");
+    console.log("Intervalo de fechas:", $("#bloqueIntervaloMood").attr("id"));
+    console.log("Selector de intervalos:", $("#intervalosMood").attr("id"));
+    console.log("Fecha de inicio:", $("#fechaInicioMood").attr("id"));
+    console.log("Fecha de fin:", $("#fechaFinMood").attr("id"));
+    console.log("Contenedor de historial:", $("#historialMood").attr("id"));*/
+
+    // Inicializa los campos de fecha con el `datepicker`
+    $(document).on('focus', "#fechaInicioMood, #fechaFinMood", function() {
+        //console.log("Inicializando datepicker en", this.id);
+        $(this).datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true
+        });
+    });
+
+    // Controlar intervalos predefinidos usando delegación de eventos
+    $(document).on('change', "#intervalosMood", function() {
+        console.log("Cambiando intervalo...");
+        var intervalo = $(this).val();
+        var hoy = new Date();
+        var inicio = new Date();
+
+        switch(intervalo) {
+            case "ultima_semana":
+                inicio.setDate(hoy.getDate() - 7);
+                break;
+            case "ultimo_mes":
+                inicio.setMonth(hoy.getMonth() - 1);
+                break;
+            case "ultimo_anio":
+                inicio.setFullYear(hoy.getFullYear() - 1);
+                break;
+        }
+
+        //console.log("Estableciendo fechas: Inicio -> " + $.datepicker.formatDate('yy-mm-dd', inicio) + " | Fin -> " + $.datepicker.formatDate('yy-mm-dd', hoy));
+        $("#fechaInicioMood").val($.datepicker.formatDate('yy-mm-dd', inicio));
+        $("#fechaFinMood").val($.datepicker.formatDate('yy-mm-dd', hoy));
+    });
+
+    // Manejar el envío del formulario
+    $(document).on('submit', "#form-intervalo-mood", function(e) {
+        //console.log("Evento submit capturado...");
+        e.preventDefault(); // Evitar el envío normal del formulario
+
+        //console.log("Formulario enviado, manejando con AJAX...");
+
+        var fechaInicio = $("#fechaInicioMood").val();
+        var fechaFin = $("#fechaFinMood").val();
+
+        //console.log("Enviando solicitud AJAX...");
+        //console.log("Fecha Inicio: ", fechaInicio);
+        //console.log("Fecha Fin: ", fechaFin);
+
+        $.ajax({
+            url: 'models/procesarHistoricoMood.php',
+            type: 'POST',
+            data: {
+                fechaInicio: fechaInicio,
+                fechaFin: fechaFin
+            },
+            success: function(response) {
+                console.log("Respuesta del servidor: ", response);
+
+                // Verificar si el contenido se está insertando correctamente
+                if (response.trim() === "") {
+                    console.error("La respuesta del servidor está vacía.");
+                } else {
+                    console.log("Contenido recibido, insertando en #historialMood.");
+                    $("#bloqueIntervaloMood").addClass("d-none");
+                    $("#historialMood").html(response);
+
+                    // Esperar un poco para asegurar que el DOM se actualiza
+                    setTimeout(function() {
+                       // console.log("Contenido después de la inserción:", $("#historialMood").html());
+                        $("#historialMood").removeClass("d-none"); // Asegurarse de que el div sea visible
+
+                        // Ejecutar el script de la gráfica después de la inserción
+                        if (document.getElementById('moodChart')) {
+                            inicializarGrafica();
+                        } else {
+                            console.error("Elemento moodChart no encontrado en el DOM.");
+                        }
+                    }, 500); // Ajusta este tiempo según sea necesario
+
+                    console.log("Contenido insertado en #historialMood.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error en la solicitud AJAX: ", status, error);
+                $("#historialMood").html("<p class='error'>Hubo un problema al obtener los datos. Por favor, inténtalo de nuevo.</p>");
+            }
+        });
+
+        //console.log("Solicitud AJAX enviada...");
+    });
+
+    function inicializarGrafica() {
+        // Verificar si el elemento moodChart está disponible en el DOM
+        var ctx = document.getElementById('moodChart').getContext('2d');
+        var moodChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Feliz','Entusiasta','Estresado','Agradecido','Motivado'],
+                datasets: [{
+                    data: [3,2,1,1,2],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                var label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += context.raw;
+                                return label;
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            }
+        });
+    }
+});
+
+//formulario de contacto
+$(document).ready(function() {
+    $('#contactForm').on('submit', function(e) {
+        e.preventDefault(); // Previene el envío normal del formulario
+
+        $.ajax({
+            type: 'POST',
+            url: 'models/contact.php',
+            data: $(this).serialize(),
+            beforeSend: function() {
+                $('button[type="submit"]').prop('disabled', true);
+            },
+            success: function(response) {
+                Swal.fire('¡Perfecto!','Tu mensaje se ha enviado correctamente.', response, 'success').then(function() {
+                    $('#contactModal').modal('hide');
+                    $('#contactForm')[0].reset(); // Resetea el formulario
+                });
+            },
+            error: function() {
+                Swal.fire('Error', 'Ocurrió un error inesperado. Inténtalo de nuevo más tarde.', 'error');
+            },
+            complete: function() {
+                $('button[type="submit"]').prop('disabled', false);
+            }
+        });
     });
 });

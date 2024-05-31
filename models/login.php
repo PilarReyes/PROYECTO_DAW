@@ -1,6 +1,6 @@
 <?php
 include 'conexion.php';
-include 'mysql.php';
+
 
 
 if (empty($_POST['usuario']) || empty($_POST['password'])) {
@@ -8,7 +8,6 @@ if (empty($_POST['usuario']) || empty($_POST['password'])) {
     die();
 }
 
-// Escapar el nombre de usuario para evitar inyección SQL
 $usuarioEscapado = $conexion->real_escape_string($_POST['usuario']);
 
 // Consulta preparada para seleccionar el nombre de usuario y la contraseña

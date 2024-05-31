@@ -1,27 +1,39 @@
 <?php
 
-include_once("{$_SERVER['DOCUMENT_ROOT']}/models/core.php");
+include 'models/core.php';
 
- 
-
-if (empty($_POST['firstName']) || empty($_POST['lastName']) || empty($_POST['currentPassword']) || empty($_POST['newPassword']) || empty($_POST['confirmNewPassword'])) {
-    header("HTTP/1.0 400 Bad Request");
+if(!session_start())
+{
+    header("HTTP/1.0 403 Unauthorized");
     die();
 }
-    
-    $hashPassword = new MySQL("SELECT password FROM usuarios WHERE email = '{$_COOKIE['usuario']}'");
-  
-    if(!password_verify($_POST['currentPassword'],$hashPassword->getItem(0,0)) || !strcmp($_POST['newPassword'], $_POST['confirmNewPassword']))
-    { 
-        header("HTTP/1.0 401 Unauthorized");
-        die();
-    }
-    
-    if(!strcmp($_POST['newPassword'], $_POST['confirmNewPassword']))
-    { 
-        header("HTTP/1.0 401 Unauthorized");
-        die();
-    }
-    
-    
-    cambiarPassword($_COOKIE['usuario'], $newPassword, $notificar = true); 
+
+
+$email = $_SESSION['email'];
+$currentPassword = $_POST['currentPassword'];
+$newPassword = $_POST['newPassword'];
+$confirmNewPassword = $_POST['confirmNewPassword'];
+
+if(empty($currentPassword) || empty($newPassword) || empty($confirmNewPassword)){
+    header("HTTP/1.0 400 Unauthorized");
+    die();
+}
+
+// Obtener el hash de la contraseña actual del usuario desde la base de datos
+$query = new MySQL("SELECT password FROM usuarios WHERE email = '{$email}'");
+$hashPassword = $query->getItem(0, 0);
+
+// Verificar la contraseña actual
+if (!password_verify($currentPassword, $hashPassword)) {
+    header("HTTP/1.0 401 Unauthorized");
+    die();
+}
+
+// Verificar que las nuevas contraseñas coincidan
+if ($newPassword !== $confirmNewPassword) {
+    header("HTTP/1.0 404 Not Found");
+    die();
+}
+ cambiarPassword($email, $newPassword);
+
+?>

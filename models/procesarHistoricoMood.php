@@ -41,17 +41,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<div class="col-xl-6 col-lg-12">
+<div class="col-lg-12">
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">Estado de Ánimo</h4>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="height: 500px;">
             <?php if (!empty($error)): ?>
                 <p class='error'><?= htmlspecialchars($error) ?></p>
             <?php else: ?>
-                <div id="animating-donut" class="ct-chart ct-golden-section chartlist-chart">
-                    <canvas id="moodChart"></canvas>
+                <div id="animating-donut" class="ct-chart ct-golden-section chartlist-chart" style="height: 100%;">
+                    <canvas id="moodChart" style="height: 100%; width: 100%;"></canvas>
                 </div>
             <?php endif; ?>
         </div>
@@ -60,9 +60,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php if (empty($error)): ?>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Script de creación de gráficos
         var ctx = document.getElementById('moodChart').getContext('2d');
         var moodChart = new Chart(ctx, {
             type: 'doughnut',
@@ -91,7 +91,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
+                    datalabels: {
+                        color: '#000',
+                        font: {
+                            weight: 'bold'
+                        },
+                        formatter: function(value, context) {
+                            return context.chart.data.labels[context.dataIndex] + ': ' + value;
+                        }
+                    },
                     legend: {
                         position: 'top',
                     },
@@ -112,7 +122,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     animateScale: true,
                     animateRotate: true
                 }
-            }
+            },
+            plugins: [ChartDataLabels] // Asegúrate de incluir el plugin ChartDataLabels
         });
     });
 </script>

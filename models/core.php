@@ -1,15 +1,52 @@
 <?php
 
 include 'mysql.php';
+include '../PHPMailer/Exception.php';
+include '../PHPMailer/PHPMailer.php';
+include '../PHPMailer/SMTP.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-function ejecutarConsulta($consulta) {
-    $mysql = new MySQL($consulta);
-    if ($mysql->getError()) {
-        echo "Error al ejecutar la consulta: " . $mysql->getError();
-        return false;
-    } else {
-        return true;
+function enviarEmail($asunto,$mensaje,$destinatarios) {
+    $mail = new PHPMailer();
+    $mail->SMTPDebug = 0;
+    $mail->isSMTP();
+    $mail->SMTPAuth = _SMTP_AUTENTICAR_;
+    $mail->SMTPSecure = _SMTP_SEGURIDAD_;
+    $mail->Host = _SMTP_SERVIDOR_; 
+    $mail->Username = _SMTP_USUARIO_; 
+    $mail->Password = _SMTP_CONTRASEÑA_;
+    $mail->Port = _SMTP_PUERTO_; 
+    $mail->setFrom(_REMITENTE_EMAIL_, _NOMBRE_REMITENTE_EMAIL_);
+    $mail->CharSet = "UTF-8";
+    $mail->Encoding = 'base64';
+
+    foreach($destinatarios as $destinatario => $val) {
+        $ocultos ? $mail->addBCC($val) : $mail->addAddress($val);
     }
+    
+    $mail->IsHTML(true);
+    $mail->Subject = $asunto;
+    $mail->Body = $mensaje; 
+    $result = $mail->Send();
+} 
+
+
+function comprobarLogin($usuario)
+{
+    $consulta="Select * from usuarios where usuario=$usuario";
+    $resultado = new MySQL($consulta);
+    if ($resultado->getFilas()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function cambiarPassword($usuario, $nuevaPass){
+    $passwordHash  = password_hash($nuevaPass,PASSWORD_BCRYPT);    
+    $consulta = "UPDATE usuarios SET password = '".$passwordHash."' WHERE email = '{$usuario}'";
+    $query = new MySQL($consulta);
 }
 
 function crearTarea($titulo, $descripcion, $fecha, $prioridad, $estado) {
