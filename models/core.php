@@ -279,6 +279,22 @@ function insertarHistoricoHabito($id_habito) {
     }
 }
 
+function verificarHabitoRegistrado($id_habito) {
+    $idUsuario = $_SESSION['idUsuario'];
+    $fecha = date('Y-m-d'); 
+    $consulta = "SELECT COUNT(*) as count FROM historicohabitos WHERE id_habito = '$id_habito' AND idUsuario = '$idUsuario' AND fecha = '$fecha'";
+    $mysql = new MySQL($consulta);
+    
+    if ($mysql->getError()) {
+        error_log("Error en la consulta de verificación SQL: " . $mysql->getError());
+        return false; 
+    } else {
+        $resultado = $mysql->datos[0]['count'];
+        return $resultado > 0;
+    }
+}
+
+
 function marcarHabitoInactivo($id) {
     $idUsuario = $_SESSION['idUsuario'];
     $consulta = "UPDATE habitos SET activo = 0 WHERE id = '$id' AND idUsuario = '$idUsuario'";
@@ -306,7 +322,6 @@ function obtenerCalendario($num_dias = 5) {
     return $calendario;
 }
 
-
 function obtenerHistorialHabitosPorFecha($fechaInicio, $fechaFin) {
 
     $idUsuario = $_SESSION['idUsuario'];
@@ -331,42 +346,6 @@ function obtenerHistorialHabitosPorFecha($fechaInicio, $fechaFin) {
 }
 
 
-function obtenerMood() {
-
-    $consulta = "SELECT DISTINCT estado_animo FROM moodtracker";
-    //echo "Consulta SQL: <pre>$consulta</pre>";
-    $mysql = new MySQL($consulta);
-
-    if ($mysql->getError()) {
-       
-        error_log("Error al obtener el historial de hábitos: " . $mysql->getError());
-        return [];
-    }
-    return $mysql->datos;
-}
-
-function obtenerEstadoAnimo() {
-    // Realizar la consulta SQL
-    $consulta = "SELECT DISTINCT estado_animo FROM moodtracker";
-    $query = new MySQL($consulta);
-
-    // Verificar si se está ejecutando la consulta correctamente
-    if (!$query) {
-        echo "Error al ejecutar la consulta SQL.";
-        return;
-    }
-
-    // Generar las opciones de selección
-    $opciones = '<option value="" selected disabled>- Selecciona estado de ánimo -</option>';
-    for ($i = 0; $i < $query->getFilas(); $i++) {
-        $estado_animo = htmlspecialchars($query->getItem($i, 0)); // Evitar ataques de inyección HTML
-        $opciones .= '<option value="' . $estado_animo . '">' . $estado_animo . '</option>';
-    }
-
-    // Devolver las opciones generadas
-    echo $opciones;
-}
-
 function eliminarHabito($id) {
     $consulta = "UPDATE habitos SET activo = 0 WHERE id = '$id'";
     $resultado = new MySQL($consulta);
@@ -382,12 +361,27 @@ function eliminarHabito($id) {
     }
 }
 
+function verificarEstadoAnimoRegistrado() {
+    $idUsuario = $_SESSION['idUsuario'];
+    $consulta = "SELECT COUNT(*) AS conteo FROM historialmood WHERE idUsuario = '$idUsuario' AND fecha = CURDATE()";
+    $mysql = new MySQL($consulta);
+    
+    if ($mysql->getError()) {
+        error_log("Error al verificar el estado de ánimo: " . $mysql->getError());
+        return false;
+    }
+
+    $resultado = $mysql->datos;
+    return $resultado[0]['conteo'] > 0;
+}
+
 function insertarEstadoAnimo($estado_animo) {
     $idUsuario = $_SESSION['idUsuario'];
     $consulta = "INSERT INTO historialmood (estado_animo, fecha, idUsuario) VALUES ('$estado_animo', CURDATE(), '$idUsuario')";
     $mysql = new MySQL($consulta);
+    
     if ($mysql->getError()) {
-        echo "Error al insertar el estado de ánimo: " . $mysql->getError();
+        error_log("Error al insertar el estado de ánimo: " . $mysql->getError());
         return false;
     } else {
         return true; 

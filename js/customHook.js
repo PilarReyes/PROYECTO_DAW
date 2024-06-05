@@ -51,8 +51,7 @@ $("#register").submit(function(e) {
         cache: false,
         processData:false,
         beforeSend : function() {
-            //$('#boton-registro').prop('disabled', true).text('Registrando...');
-            $("#boton-login").prop("disabled",true);
+            $("#boton-login").prop("disabled",true).text('Registrando...');
         },
         success: function(respuesta) {
             Swal.fire('¡Perfecto!', 'Te has registrado correctamente. Ahora puedes iniciar sesión con tus datos.', 'success').then(
@@ -85,12 +84,10 @@ $("#register").submit(function(e) {
 
 //cambiar contraseña
 document.addEventListener('DOMContentLoaded', function() {
-    // Manejar clic en el botón para cambiar la contraseña usando jQuery 'on' para delegar el evento
     $(document).on('click', '#botonCambiarContrasena', function() {
         $('#modalCambiarContrasena').modal('show');
     });
 
-    // Manejar el formulario de cambiar contraseña usando jQuery 'on' para delegar el evento
     $(document).on('submit', '#formCambiarContrasena', function(e) {
         e.preventDefault();
         $.ajax({
@@ -129,21 +126,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 //crear tarea
 $(document).ready(function() {
-    //console.log("Documento listo");
 
-    // Verificar si jQuery está funcionando
-    /*if (typeof jQuery !== 'undefined') {
-        console.log("jQuery está cargado");
-    } else {
-        console.log("jQuery no está cargado");
-    }*/
-
-    // Delegación de eventos para el botón Crear
     $(document).on("click", "#botonCrear", function() {
         console.log("Botón Crear clickeado");
     });
 
-    // Delegación de eventos para el formulario Crear Tarea
     $(document).on("submit", "#crearTarea", function(e) {
         e.preventDefault();
         console.log("Formulario de crear enviado");
@@ -168,7 +155,7 @@ $(document).ready(function() {
                 console.log("Respuesta del servidor:", respuesta);
                 Swal.fire('¡Perfecto!', 'La tarea se ha creado correctamente.', 'success').then(
                     function() {
-                        location.reload(); // Recargar la página después de cerrar el modal
+                        location.reload();
                     });
             },
             error: function(xhr, status, error) {
@@ -222,7 +209,6 @@ $(document).on('click', '.editar-tarea', function() {
 });
 
 //modificar tarea
-// Asegúrate de que el evento de envío del formulario se registra correctamente
 $(document).on('submit', '#modificarTarea', function(e) {
     e.preventDefault();
     console.log("Formulario de modificación de tarea enviado.");
@@ -277,22 +263,17 @@ $(document).on('submit', '#modificarTarea', function(e) {
 $(document).on('click', '.eliminar-tarea', function() {
     var idTarea = $(this).closest('form').find('input[name="id"]').val();
     console.log("ID de la tarea a eliminar (almacenado en el modal):", idTarea);
-    // Guarda el ID en un lugar que puedas acceder cuando confirmes la eliminación
     $('#delete').data('id', idTarea);
 });
 
 $(document).ready(function() {
-    // Captura el clic en el botón de eliminación y abre el modal
     $(document).on('click', '.eliminar-tarea', function() {
         var idTarea = $(this).closest('form').find('input[name="id"]').val();
         console.log("ID de la tarea a eliminar (almacenado en el modal):", idTarea);
-        // Almacena el ID de la tarea en el modal
         $('#delete').data('id', idTarea);
-        // Abre el modal de confirmación de eliminación
         $('#delete').modal('show');
     });
 
-    // Captura el clic en el botón de confirmación de eliminación
     $(document).on("click", ".eliminar-confirmar", function() {
         console.log("Botón de confirmación de eliminación clickeado.");
 
@@ -324,16 +305,12 @@ $(document).ready(function() {
             },
             complete: function() {
                 console.log("Solicitud AJAX completada.");
-                // Habilita nuevamente los botones de eliminar
                 $(".eliminar-tarea").prop("disabled", false);
             },
         });
-
-        // Cierra el modal de confirmación de eliminación
         $('#delete').modal('hide');
     });
 
-    // Captura el clic en el botón "No"
     $(document).on("click", ".btn-default", function() {
         console.log("Botón 'No' clickeado, cerrando el modal.");
         $('#delete').modal('hide');
@@ -341,24 +318,13 @@ $(document).ready(function() {
 });
 
 
-
 // Crear evento
 $(document).ready(function() {
-    //console.log("Documento listo");
-
-    // Verificar si jQuery está funcionando
-    /*if (typeof jQuery !== 'undefined') {
-        console.log("jQuery está cargado");
-    } else {
-        console.log("jQuery no está cargado");
-    }*/
-
-    // Delegación de eventos para el botón Crear
+   
     $(document).on("click", "#botonCrear", function() {
         console.log("Botón Crear clickeado");
     });
 
-    // Delegación de eventos para el formulario Crear Tarea
     $(document).on("submit", "#crearEvento", function(e) {
         e.preventDefault();
         console.log("Formulario de crear enviado");
@@ -383,7 +349,7 @@ $(document).ready(function() {
                 console.log("Respuesta del servidor:", respuesta);
                 Swal.fire('¡Perfecto!', 'El evento se ha creado correctamente.', 'success').then(
                     function() {
-                        location.reload(); // Recargar la página después de cerrar el modal
+                        location.reload(); 
                     });
             },
             error: function(xhr, status, error) {
@@ -416,9 +382,8 @@ $(document).ready(function() {
 $(document).on('click', '.editar-evento', function() {
     var button = $(this);
     var eventoId = button.data('id');
-    //var form = $(this);
-    //var eventoId = form.find('input[name="id"]').val();
     console.log("ID del evento a modificar:", eventoId);
+
 //modificar evento
     console.log("Enviando solicitud AJAX a modificarEvento.php con ID:", eventoId);
     $.ajax({
@@ -486,30 +451,23 @@ $(document).on('submit', '#modificarEvento', function(e) {
         });
     });
 
-
-
 //eliminar evento
-
 $(document).ready(function() {
-    // Capturar clic en cualquier botón de eliminar evento y abrir el modal
     $(document).on('click', '.eliminar-evento', function() {
         var idEvento = $(this).closest('form').find('input[name="id"]').val();
         console.log("ID del evento a eliminar (almacenado en el modal):", idEvento);
-        // Almacena el ID del evento en el modal
         $('#deleteEvento').data('id', idEvento);
-        // Abre el modal de confirmación de eliminación
         $('#deleteEvento').modal('show');
     });
 
-    // Manejar confirmación de eliminación en el modal
     $(document).on('click', '.eliminar-confirmar-evento', function() {
         var idEvento = $('#deleteEvento').data('id');
-        console.log("ID del evento a eliminar:", idEvento); // Esto debería mostrar el ID correcto
+        console.log("ID del evento a eliminar:", idEvento); 
 
         $.ajax({
             url: "models/eliminarEvento.php",
             type: "post",
-            data: { id: idEvento }, // Asegurarse de enviar solo el ID
+            data: { id: idEvento }, 
             beforeSend: function() {
                 $(".eliminar-confirmar-evento").prop("disabled", true);
             },
@@ -525,12 +483,9 @@ $(document).ready(function() {
                 $(".eliminar-confirmar-evento").prop("disabled", false);
             }
         });
-
-        // Cierra el modal de confirmación de eliminación de eventos
         $('#deleteEvento').modal('hide');
     });
 
-    // Manejar clic en el botón "No" para cerrar el modal
     $(document).on("click", ".btn-default", function() {
         console.log("Botón 'No' clickeado, cerrando el modal.");
         $('#deleteEvento').modal('hide');
@@ -540,21 +495,11 @@ $(document).ready(function() {
 
 // Crear fecha especial
 $(document).ready(function() {
-   // console.log("Documento listo");
 
-    // Verificar si jQuery está funcionando
-   /* if (typeof jQuery !== 'undefined') {
-        console.log("jQuery está cargado");
-    } else {
-        console.log("jQuery no está cargado");
-    }*/
-
-    // Delegación de eventos para el botón Crear
     $(document).on("click", "#botonCrear", function() {
         console.log("Botón Crear clickeado");
     });
 
-    // Delegación de eventos para el formulario Crear Tarea
     $(document).on("submit", "#crearFechaEspecial", function(e) {
         e.preventDefault();
         console.log("Formulario de crear enviado");
@@ -681,25 +626,21 @@ $(document).on('submit', '#modificarFechaEspecial', function(e) {
 // Eliminar fecha especial
 
 $(document).ready(function() {
-    // Capturar clic en cualquier botón de eliminar evento y abrir el modal
     $(document).on('click', '.eliminarFechaEspecial', function() {
         var idFechaE = $(this).closest('form').find('input[name="id"]').val();
         console.log("ID del evento a eliminar (almacenado en el modal):", idFechaE);
-        // Almacena el ID del evento en el modal
         $('#deleteFechaEspecial').data('id', idFechaE);
-        // Abre el modal de confirmación de eliminación
         $('#deleteFechaEspecial').modal('show');
     });
 
-    // Manejar confirmación de eliminación en el modal
     $(document).on('click', '.eliminar-confirmar-fecha-especial', function() {
         var idFechaE = $('#deleteFechaEspecial').data('id');
-        console.log("ID del evento a eliminar:", idFechaE); // Esto debería mostrar el ID correcto
+        console.log("ID del evento a eliminar:", idFechaE); 
 
         $.ajax({
             url: "models/eliminarFechaEspecial.php",
             type: "post",
-            data: { id: idFechaE }, // Asegurarse de enviar solo el ID
+            data: { id: idFechaE }, 
             beforeSend: function() {
                 $(".eliminar-confirmar-evento").prop("disabled", true);
             },
@@ -716,11 +657,9 @@ $(document).ready(function() {
             }
         });
 
-        // Cierra el modal de confirmación de eliminación de eventos
         $('#deleteFechaEspecial').modal('hide');
     });
 
-    // Manejar clic en el botón "No" para cerrar el modal
     $(document).on("click", ".btn-default", function() {
         console.log("Botón 'No' clickeado, cerrando el modal.");
         $('#deleteFechaEspecial').modal('hide');
@@ -729,21 +668,10 @@ $(document).ready(function() {
 
 // Crear habito
 $(document).ready(function() {
-    //console.log("Documento listo");
-
-    // Verificar si jQuery está funcionando
-    /*if (typeof jQuery !== 'undefined') {
-        console.log("jQuery está cargado");
-    } else {
-        console.log("jQuery no está cargado");
-    }*/
-
-    // Delegación de eventos para el botón Crear
     $(document).on("click", "#botonCrear", function() {
         console.log("Botón Crear clickeado");
     });
 
-    // Delegación de eventos para el formulario Crear Tarea
     $(document).on("submit", "#crearHabito", function(e) {
         e.preventDefault();
         console.log("Formulario de crear enviado");
@@ -848,21 +776,10 @@ $(document).on("submit", "#form-habitos", function(e) {
 
 //Guardar habitos
 $(document).ready(function() {
-    /*console.log("Documento listo");
-
-    // Verificar si jQuery está funcionando
-    if (typeof jQuery !== 'undefined') {
-        console.log("jQuery está cargado");
-    } else {
-        console.log("jQuery no está cargado");
-    }*/
-
-    // Delegación de eventos para el botón Guardar
     $(document).on("click", "#guardar_historial", function() {
         console.log("Botón Guardar clickeado");
     });
 
-    // Delegación de eventos para el formulario Historial de Hábitos
     $(document).on("submit", "#historial-habitos", function(e) {
         e.preventDefault();
         console.log("Formulario de historial enviado");
@@ -889,7 +806,17 @@ $(document).ready(function() {
             error: function(xhr, status, error) {
                 console.log("Error en la solicitud AJAX:", status, error);
                 console.log("Response text:", xhr.responseText);
-                Swal.fire('Error', 'Hubo un problema al guardar el historial de hábitos.', 'error');
+                let tipo = "error";
+                let desc = "";
+                switch(xhr.status) {
+                    case 400:
+                        desc = "Ya se ha registrado el hábito para el día de hoy.";
+                        break;
+                    default:
+                        desc = "Ocurrió un error inesperado. Inténtalo de nuevo más tarde.";
+                        break;
+                }
+                Swal.fire('Error al registrar el hábito', desc, tipo);
             },
             complete: function() {
                 console.log("Solicitud AJAX completada");
@@ -901,9 +828,6 @@ $(document).ready(function() {
 
  //Eliminar habito
  $(document).ready(function() {
-    //console.log("Documento listo");
-
-    // Capturar clic en cualquier botón de eliminar hábito y abrir el modal
     $(document).on('click', '.eliminar-habito', function() {
         var habitoId = $(this).closest('form').find('input[name="id"]').val();
         console.log("ID del hábito a eliminar (almacenado en el modal):", habitoId);
@@ -911,7 +835,6 @@ $(document).ready(function() {
         $('#deleteHabitoModal').modal('show');
     });
 
-    // Manejar confirmación de eliminación en el modal
     $(document).on('click', '.eliminar-confirmar-habito', function() {
         var habitoId = $('#deleteHabitoModal').data('id');
         console.log("ID del hábito a eliminar:", habitoId);
@@ -945,7 +868,6 @@ $(document).ready(function() {
         $('#deleteHabitoModal').modal('hide');
     });
 
-    // Manejar clic en el botón "No" para cerrar el modal
     $(document).on("click", ".btn-default", function() {
         console.log("Botón 'No' clickeado, cerrando el modal.");
         $('#deleteHabitoModal').modal('hide');
@@ -954,9 +876,6 @@ $(document).ready(function() {
 
 //habitos Tracker
 $(document).ready(function() {
-    //console.log("Documento listo y cargando...");
-
-    // Inicializa los campos de fecha con el `datepicker`
     $(document).on('focus', "#fechaInicioHabito, #fechaFinHabito", function() {
         console.log("Inicializando datepicker en", this.id);
         $(this).datepicker({
@@ -966,11 +885,7 @@ $(document).ready(function() {
         });
     });
 
-    //console.log("Calendarios inicializados...");
-
-    // Controlar intervalos predefinidos usando delegación de eventos
     $(document).on('change', "#intervalosHabito", function() {
-       // console.log("Cambiando intervalo...");
         var intervalo = $(this).val();
         var hoy = new Date();
         var inicio = new Date();
@@ -992,14 +907,9 @@ $(document).ready(function() {
         $("#fechaFinHabito").val($.datepicker.formatDate('yy-mm-dd', hoy));
     });
 
-    //console.log("Evento de cambio de intervalo configurado...");
-
-    // Manejar el envío del formulario
     $(document).on('submit', "#form-intervalo-habito", function(e) {
         console.log("Evento submit capturado...");
-        e.preventDefault(); // Evitar el envío normal del formulario
-
-        console.log("Formulario enviado, manejando con AJAX...");
+        e.preventDefault();
 
         var fechaInicio = $("#fechaInicioHabito").val();
         var fechaFin = $("#fechaFinHabito").val();
@@ -1018,11 +928,9 @@ $(document).ready(function() {
             success: function(response) {
                 console.log("Respuesta del servidor: ", response);
 
-                // Inserta el contenido en el div
                 $("#bloqueIntervalo").addClass("d-none");
                 $("#historialHabitos").html(response);
                 
-                // Agrega un mensaje de depuración para verificar la inserción
                 console.log("Contenido insertado en #historialHabitos");
             },
             error: function(xhr, status, error) {
@@ -1033,21 +941,16 @@ $(document).ready(function() {
 
         console.log("Solicitud AJAX enviada...");
     });
-
-    //console.log("Manejo de envío de formulario configurado...");
 });
-
 
 
 // guardar estado de animo
 $(document).ready(function(){
-    //console.log("Document de mood cargado");
 
     $(document).on('submit', '#moodTracker', function(e) {
         console.log("Formulario moodTracker submit");
 
         e.preventDefault();
-        // Obtiene los datos del formulario
         var formData = $(this).serialize();
         console.log("Datos del formulario:", formData);
         $.ajax({
@@ -1057,23 +960,31 @@ $(document).ready(function(){
             success: function(response){
                 console.log(response);
                 Swal.fire('¡Perfecto!', 'Tu estado de ánimo se ha guardado correctamente.', 'success').then(function() {
-                    console.log("Recargando la página");
                     location.reload();
                 });
             },
-            error: function(xhr, status, error){
-                console.error("Error en la solicitud AJAX:", error);
-                Swal.fire('Error', 'Ocurrió un error inesperado. Inténtalo de nuevo más tarde.', 'error');
-            }
+            error: function(xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", status, error);
+                console.log("Response text:", xhr.responseText);
+                let tipo = "error";
+                let desc = "";
+                switch(xhr.status) {
+                    case 400:
+                        desc = "Ya se ha registrado el estado de animo del día";
+                        break;
+                    default:
+                        desc = "Ocurrió un error inesperado. Inténtalo de nuevo más tarde.";
+                        break;
+                }
+                Swal.fire('Error al registrar el estado de animo', desc, tipo);
+            },
         });
     });
 });
 
 
-
 //historico Mood
 $(document).ready(function() {
-    // Inicializa los campos de fecha con el `datepicker`
     $(document).on('focus', "#fechaInicioMood, #fechaFinMood", function() {
         $(this).datepicker({
             dateFormat: 'yy-mm-dd',
@@ -1082,7 +993,6 @@ $(document).ready(function() {
         });
     });
 
-    // Controlar intervalos predefinidos usando delegación de eventos
     $(document).on('change', "#intervalosMood", function() {
         var intervalo = $(this).val();
         var hoy = new Date();
@@ -1104,7 +1014,6 @@ $(document).ready(function() {
         $("#fechaFinMood").val($.datepicker.formatDate('yy-mm-dd', hoy));
     });
 
-    // Manejar el envío del formulario
     $(document).on('submit', "#form-intervalo-mood", function(e) {
         e.preventDefault();
 
@@ -1118,7 +1027,7 @@ $(document).ready(function() {
                 fechaInicio: fechaInicio,
                 fechaFin: fechaFin
             },
-            dataType: 'json', // Asegura que la respuesta se trate como JSON
+            dataType: 'json', 
             success: function(response) {
                 if (response.error) {
                     console.error(response.error);
@@ -1127,18 +1036,16 @@ $(document).ready(function() {
                     $("#bloqueIntervaloMood").addClass("d-none");
                     $("#historialMood").html('<div id="animating-donut" class="ct-chart ct-golden-section chartlist-chart" style="height: 100%;"><canvas id="moodChart" style="height: 100%; width: 100%;"></canvas></div>');
 
-                    // Esperar un poco para asegurar que el DOM se actualiza
                     setTimeout(function() {
                         console.log("Contenido después de la inserción:", $("#historialMood").html());
-                        $("#historialMood").removeClass("d-none"); // Asegurarse de que el div sea visible
+                        $("#historialMood").removeClass("d-none"); 
 
-                        // Ejecutar el script de la gráfica después de la inserción
                         if (document.getElementById('moodChart')) {
                             inicializarGrafica(response.labels, response.data);
                         } else {
                             console.error("Elemento moodChart no encontrado en el DOM.");
                         }
-                    }, 500); // Ajusta este tiempo según sea necesario
+                    }, 500); 
 
                     console.log("Contenido insertado en #historialMood.");
                 } else {
@@ -1176,7 +1083,7 @@ $(document).ready(function() {
                         'rgba(255, 206, 86, 0.2)',
                         'rgba(75, 192, 192, 0.2)',
                         'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'  // Se pueden agregar más colores si es necesario
+                        'rgba(255, 159, 64, 0.2)'  
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
@@ -1190,7 +1097,7 @@ $(document).ready(function() {
                         'rgba(255, 206, 86, 1)',
                         'rgba(75, 192, 192, 1)',
                         'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'  // Se pueden agregar más colores si es necesario
+                        'rgba(255, 159, 64, 1)'  
                     ],
                     borderWidth: 1
                 }]
@@ -1227,7 +1134,7 @@ $(document).ready(function() {
 //formulario de contacto
 $(document).ready(function() {
     $('#contactForm').on('submit', function(e) {
-        e.preventDefault(); // Previene el envío normal del formulario
+        e.preventDefault(); 
 
         $.ajax({
             type: 'POST',
@@ -1239,7 +1146,7 @@ $(document).ready(function() {
             success: function(response) {
                 Swal.fire('¡Perfecto!','Tu mensaje se ha enviado correctamente.', response, 'success').then(function() {
                     $('#contactModal').modal('hide');
-                    $('#contactForm')[0].reset(); // Resetea el formulario
+                    $('#contactForm')[0].reset(); 
                 });
             },
             error: function() {

@@ -11,10 +11,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $habito_id = $parts[0];
             $fecha = $parts[1];
 
-            // Insertar el historial del hábito en la base de datos
-            insertarHistoricoHabito($habito_id, $fecha);
+          
+            if (verificarHabitoRegistrado($habito_id, $fecha)) {
+                header('HTTP/1.1 400 Bad Request');
+                echo 'El hábito ya ha sido registrado para la fecha ' . $fecha;
+                exit();
+            } else {
+                insertarHistoricoHabito($habito_id, $fecha);
+            }
         }
     }
 
+  
 }
 
