@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 include 'mysql.php';
 include '../PHPMailer/Exception.php';
@@ -43,21 +44,21 @@ function comprobarLogin($usuario)
     }
 }
 
-function cambiarPassword($usuario, $nuevaPass){
-    $passwordHash  = password_hash($nuevaPass,PASSWORD_BCRYPT);    
-    $consulta = "UPDATE usuarios SET password = '".$passwordHash."' WHERE email = '{$usuario}'";
-    $query = new MySQL($consulta);
-}
 
 function crearTarea($titulo, $descripcion, $fecha, $prioridad, $estado) {
-   
-    $consulta = "INSERT INTO tareas (titulo, descripcion, fecha, prioridad, estado) VALUES ('$titulo', '$descripcion', '$fecha', '$prioridad', '$estado')";
+
+    $idUsuario = $_SESSION['idUsuario'];
+
+    $consulta = "INSERT INTO tareas (titulo, descripcion, fecha, prioridad, estado, idUsuario) VALUES ('$titulo', '$descripcion', '$fecha', '$prioridad', '$estado', '$idUsuario')";
+    
     $resultado = new MySQL($consulta);
+   
     return $resultado;
 }
 
+
 function obtenerTareas() {
-    $consulta = "SELECT * FROM tareas";
+    $consulta = "SELECT tareas.* FROM tareas LEFT JOIN usuarios ON usuarios.id = tareas.idUsuario WHERE usuarios.email = '{$_SESSION['email']}'";
     $resultado = new MySQL($consulta);
     return $resultado->datos;
 }
@@ -104,15 +105,18 @@ function modificarTarea($id_tarea, $titulo, $descripcion, $fecha, $estado, $prio
 }
 
 
-
 function crearEvento($nombre, $descripcion, $fecha_inicio, $fecha_fin, $ubicacion) {
-    $consulta = "INSERT INTO eventos (nombre, descripcion, fecha_inicio, fecha_fin, ubicacion) VALUES ('$nombre', '$descripcion', '$fecha_inicio', '$fecha_fin', '$ubicacion')";
+
+    $idUsuario = $_SESSION['idUsuario'];
+
+    $consulta = "INSERT INTO eventos (nombre, descripcion, fecha_inicio, fecha_fin, ubicacion, idUsuario) VALUES ('$nombre', '$descripcion', '$fecha_inicio', '$fecha_fin', '$ubicacion', '$idUsuario')";
     $resultado = new MySQL($consulta);
     return $resultado;
 }
 
+
 function obtenerEventos() {
-    $consulta = "SELECT * FROM eventos";
+    $consulta = "SELECT eventos.* FROM eventos LEFT JOIN usuarios ON usuarios.id = eventos.idUsuario WHERE usuarios.email = '{$_SESSION['email']}'";
     $resultado = new MySQL($consulta);
     return $resultado->datos;
 }
@@ -150,16 +154,20 @@ function modificarEvento($id_evento, $nombre, $descripcion, $fecha_inicio, $fech
 }
 
 function crearEventoEspecial($nombre, $fecha, $tipo, $notas) {
-    $consulta = "INSERT INTO eventosespeciales (nombre, fecha, tipo, notas) VALUES ('$nombre', '$fecha', '$tipo', '$notas')";
+
+    $idUsuario = $_SESSION['idUsuario'];
+    $consulta = "INSERT INTO eventosespeciales (nombre, fecha, tipo, notas, idUsuario) VALUES ('$nombre', '$fecha', '$tipo', '$notas', '$idUsuario')";
     $resultado = new MySQL($consulta);
     return $resultado;
 }
 
 function obtenerEventosEspeciales() {
-    $consulta = "SELECT * FROM eventosespeciales";
+    $consulta = "SELECT eventosespeciales.* FROM eventosespeciales LEFT JOIN usuarios ON usuarios.id = eventosespeciales.idUsuario WHERE usuarios.email = '{$_SESSION['email']}'";
     $resultado = new MySQL($consulta);
     return $resultado->datos;
 }
+
+
 
 function obtenerEventoEspecialPorId($id_evento) {
     $consulta = "SELECT * FROM eventosespeciales WHERE id = " . intval($id_evento) . " LIMIT 1";
@@ -207,14 +215,12 @@ function obtenerHabitosPredefinidos() {
 }
 
 function obtenerHabitosActivos() {
-    $consulta = "SELECT id, nombre, descripcion FROM habitos WHERE activo = 1";
-    //echo "Consulta SQL: <pre>$consulta</pre>";
+    $idUsuario = $_SESSION['idUsuario'];
+    $consulta = "SELECT id, nombre, descripcion FROM habitos WHERE activo = 1 AND idUsuario = '$idUsuario'";
     $mysql = new MySQL($consulta);
-     //echo "Datos Obtenidos:<pre>";
-     //print_r($mysql->datos);
-     //echo "</pre>";
+    
     if ($mysql->getError()) {
-        echo "Error al obtener hábitos del usuario: " . $mysql->getError();
+        error_log("Error al obtener hábitos activos del usuario: " . $mysql->getError());
         return array();  // Retorna un array vacío en caso de error
     } else {
         return $mysql->datos;  // Retorna los datos obtenidos
@@ -246,20 +252,19 @@ function obtenerDescripcionHabito($habito_id) {
 }
 
 function insertarHabito($nombre, $descripcion) {
-    $consulta = "INSERT INTO habitos (nombre, descripcion) VALUES ('$nombre', '$descripcion')";
-    $mysql = new MySQL($consulta);
+    $idUsuario = $_SESSION['idUsuario'];
+    $consulta = "INSERT INTO habitos (nombre, descripcion, idUsuario) VALUES ('$nombre', '$descripcion', '$idUsuario')";
 
-    if ($mysql->getError()) {
-        echo "Error al insertar el hábito: " . $mysql->getError();
-        return false;
-    } else {
-        return true;
-    }
+    $resultado = new MySQL($consulta);
+    return $resultado;
 }
 
+
+
 function insertarHistoricoHabito($id_habito) {
+    $idUsuario = $_SESSION['idUsuario'];
     $fecha = date('Y-m-d'); // Obtiene la fecha actual en el formato YYYY-MM-DD
-    $consulta = "INSERT INTO historicohabitos (id_habito, fecha) VALUES ('$id_habito', '$fecha')";
+    $consulta = "INSERT INTO historicohabitos (id_habito, idUsuario, fecha) VALUES ('$id_habito', '$idUsuario', '$fecha')";
     error_log("Consulta SQL: $consulta");
 
     $mysql = new MySQL($consulta);
@@ -275,7 +280,8 @@ function insertarHistoricoHabito($id_habito) {
 }
 
 function marcarHabitoInactivo($id) {
-    $consulta = "UPDATE habitos SET activo = 0 WHERE id = '$id'";
+    $idUsuario = $_SESSION['idUsuario'];
+    $consulta = "UPDATE habitos SET activo = 0 WHERE id = '$id' AND idUsuario = '$idUsuario'";
     $resultado = new MySQL($consulta);
     
     if ($resultado->getError()) {
@@ -302,11 +308,13 @@ function obtenerCalendario($num_dias = 5) {
 
 
 function obtenerHistorialHabitosPorFecha($fechaInicio, $fechaFin) {
-  
+
+    $idUsuario = $_SESSION['idUsuario'];
     $consulta = "SELECT historicohabitos.id, historicohabitos.id_habito, habitos.nombre, historicohabitos.fecha
     FROM historicohabitos 
     LEFT JOIN habitos ON historicohabitos.id_habito = habitos.id
     WHERE historicohabitos.fecha BETWEEN '{$fechaInicio}' AND '{$fechaFin}'
+    AND habitos.idUsuario = '{$idUsuario}'
     ORDER BY historicohabitos.fecha DESC";
 
     "Consulta SQL: <pre>$consulta</pre>";
@@ -375,8 +383,8 @@ function eliminarHabito($id) {
 }
 
 function insertarEstadoAnimo($estado_animo) {
-    
-    $consulta = "INSERT INTO historialmood (estado_animo, fecha) VALUES ('$estado_animo', CURDATE())";
+    $idUsuario = $_SESSION['idUsuario'];
+    $consulta = "INSERT INTO historialmood (estado_animo, fecha, idUsuario) VALUES ('$estado_animo', CURDATE(), '$idUsuario')";
     $mysql = new MySQL($consulta);
     if ($mysql->getError()) {
         echo "Error al insertar el estado de ánimo: " . $mysql->getError();
@@ -386,10 +394,13 @@ function insertarEstadoAnimo($estado_animo) {
     }
 }
 
+
     function obtenerHistorialEstadosAnimoPorFecha($fechaInicio, $fechaFin) {
+        $idUsuario = $_SESSION['idUsuario'];
         $consulta = "SELECT id, estado_animo, fecha
                      FROM historialmood
                      WHERE fecha BETWEEN '{$fechaInicio}' AND '{$fechaFin}'
+                     AND idUsuario = '$idUsuario'
                      ORDER BY fecha DESC";
     
         $mysql = new MySQL($consulta);

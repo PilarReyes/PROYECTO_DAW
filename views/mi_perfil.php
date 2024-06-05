@@ -1,6 +1,6 @@
 <?php
 include '../models/core.php';
-session_start();
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -19,7 +19,7 @@ session_start();
                     <img src="../images/Fondos/fondo13.png" alt="Fondo de perfil" class="background-image">
                 </div>
                 <div class="profile-pic d-flex">
-                    <img src="../images/profile/perfil2.png" alt="Imagen de perfil" class="profile-image">
+                    <img src="../images/profile/perfil1.png" alt="Imagen de perfil" class="profile-image">
                     <div class="profile-info2">      
                         <span class="font-w400 d-block"><?= $_SESSION['nombre'] ?></span>
                     </div>

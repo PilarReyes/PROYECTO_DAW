@@ -1,12 +1,18 @@
 <?php
 
+
+
 include '../models/core.php';;
+
 
     $titulo = isset($_POST["titulo"]) ? $_POST["titulo"] : "";
     $descripcion = isset($_POST["descripcion"]) ? $_POST["descripcion"] : "";
     $fecha = isset($_POST["fecha"]) ? $_POST["fecha"] : "";
     $prioridad = isset($_POST["prioridad"]) ? $_POST["prioridad"] : "";
     $estado = isset($_POST["estado"]) ? $_POST["estado"] : "";
+    $idUsuario = isset($_SESSION['idUsuario']) ? $_SESSION['idUsuario'] : null;
+
+    error_log("ID de Usuario: $idUsuario");
 
     if (empty($titulo) || empty($fecha) || empty($prioridad) || empty($estado))  {
         /*header("HTTP/1.0 400 Bad Request");

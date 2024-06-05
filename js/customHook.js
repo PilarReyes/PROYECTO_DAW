@@ -1065,27 +1065,16 @@ $(document).ready(function(){
                 console.error("Error en la solicitud AJAX:", error);
                 Swal.fire('Error', 'Ocurrió un error inesperado. Inténtalo de nuevo más tarde.', 'error');
             }
-            // No es necesario completar ninguna acción específica aquí
         });
     });
 });
 
 
-//Mood Tracker
-/*$(document).ready(function() {
-    console.log("Documento listo y cargando...");
 
-    // Verificar IDs de elementos HTML
-    console.log("Verificando IDs de elementos HTML...");
-    console.log("Intervalo de fechas:", $("#bloqueIntervaloMood").attr("id"));
-    console.log("Selector de intervalos:", $("#intervalosMood").attr("id"));
-    console.log("Fecha de inicio:", $("#fechaInicioMood").attr("id"));
-    console.log("Fecha de fin:", $("#fechaFinMood").attr("id"));
-    console.log("Contenedor de historial:", $("#historialMood").attr("id"));
-
+//historico Mood
+$(document).ready(function() {
     // Inicializa los campos de fecha con el `datepicker`
     $(document).on('focus', "#fechaInicioMood, #fechaFinMood", function() {
-        console.log("Inicializando datepicker en", this.id);
         $(this).datepicker({
             dateFormat: 'yy-mm-dd',
             changeMonth: true,
@@ -1095,7 +1084,6 @@ $(document).ready(function(){
 
     // Controlar intervalos predefinidos usando delegación de eventos
     $(document).on('change', "#intervalosMood", function() {
-        console.log("Cambiando intervalo...");
         var intervalo = $(this).val();
         var hoy = new Date();
         var inicio = new Date();
@@ -1112,24 +1100,16 @@ $(document).ready(function(){
                 break;
         }
 
-        console.log("Estableciendo fechas: Inicio -> " + $.datepicker.formatDate('yy-mm-dd', inicio) + " | Fin -> " + $.datepicker.formatDate('yy-mm-dd', hoy));
         $("#fechaInicioMood").val($.datepicker.formatDate('yy-mm-dd', inicio));
         $("#fechaFinMood").val($.datepicker.formatDate('yy-mm-dd', hoy));
     });
 
     // Manejar el envío del formulario
     $(document).on('submit', "#form-intervalo-mood", function(e) {
-        console.log("Evento submit capturado...");
-        e.preventDefault(); // Evitar el envío normal del formulario
-
-        console.log("Formulario enviado, manejando con AJAX...");
+        e.preventDefault();
 
         var fechaInicio = $("#fechaInicioMood").val();
         var fechaFin = $("#fechaFinMood").val();
-
-        console.log("Enviando solicitud AJAX...");
-        console.log("Fecha Inicio: ", fechaInicio);
-        console.log("Fecha Fin: ", fechaFin);
 
         $.ajax({
             url: 'models/procesarHistoricoMood.php',
@@ -1138,128 +1118,31 @@ $(document).ready(function(){
                 fechaInicio: fechaInicio,
                 fechaFin: fechaFin
             },
+            dataType: 'json', // Asegura que la respuesta se trate como JSON
             success: function(response) {
-                console.log("Respuesta del servidor: ", response);
-
-                // Verificar si el contenido se está insertando correctamente
-                if (response.trim() === "") {
-                    console.error("La respuesta del servidor está vacía.");
-                } else {
+                if (response.error) {
+                    console.error(response.error);
+                } else if (response.labels && response.data) {
                     console.log("Contenido recibido, insertando en #historialMood.");
                     $("#bloqueIntervaloMood").addClass("d-none");
-                    $("#historialMood").html(response);
+                    $("#historialMood").html('<div id="animating-donut" class="ct-chart ct-golden-section chartlist-chart" style="height: 100%;"><canvas id="moodChart" style="height: 100%; width: 100%;"></canvas></div>');
 
                     // Esperar un poco para asegurar que el DOM se actualiza
                     setTimeout(function() {
                         console.log("Contenido después de la inserción:", $("#historialMood").html());
                         $("#historialMood").removeClass("d-none"); // Asegurarse de que el div sea visible
-                    }, 1000);
-
-                    console.log("Contenido insertado en #historialMood.");
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("Error en la solicitud AJAX: ", status, error);
-                $("#historialMood").html("<p class='error'>Hubo un problema al obtener los datos. Por favor, inténtalo de nuevo.</p>");
-            }
-        });
-
-        console.log("Solicitud AJAX enviada...");
-    });
-});*/
-
-
-$(document).ready(function() {
-    //console.log("Documento listo y cargando...");
-
-    // Verificar IDs de elementos HTML
-    /*console.log("Verificando IDs de elementos HTML...");
-    console.log("Intervalo de fechas:", $("#bloqueIntervaloMood").attr("id"));
-    console.log("Selector de intervalos:", $("#intervalosMood").attr("id"));
-    console.log("Fecha de inicio:", $("#fechaInicioMood").attr("id"));
-    console.log("Fecha de fin:", $("#fechaFinMood").attr("id"));
-    console.log("Contenedor de historial:", $("#historialMood").attr("id"));*/
-
-    // Inicializa los campos de fecha con el `datepicker`
-    $(document).on('focus', "#fechaInicioMood, #fechaFinMood", function() {
-        //console.log("Inicializando datepicker en", this.id);
-        $(this).datepicker({
-            dateFormat: 'yy-mm-dd',
-            changeMonth: true,
-            changeYear: true
-        });
-    });
-
-    // Controlar intervalos predefinidos usando delegación de eventos
-    $(document).on('change', "#intervalosMood", function() {
-        console.log("Cambiando intervalo...");
-        var intervalo = $(this).val();
-        var hoy = new Date();
-        var inicio = new Date();
-
-        switch(intervalo) {
-            case "ultima_semana":
-                inicio.setDate(hoy.getDate() - 7);
-                break;
-            case "ultimo_mes":
-                inicio.setMonth(hoy.getMonth() - 1);
-                break;
-            case "ultimo_anio":
-                inicio.setFullYear(hoy.getFullYear() - 1);
-                break;
-        }
-
-        //console.log("Estableciendo fechas: Inicio -> " + $.datepicker.formatDate('yy-mm-dd', inicio) + " | Fin -> " + $.datepicker.formatDate('yy-mm-dd', hoy));
-        $("#fechaInicioMood").val($.datepicker.formatDate('yy-mm-dd', inicio));
-        $("#fechaFinMood").val($.datepicker.formatDate('yy-mm-dd', hoy));
-    });
-
-    // Manejar el envío del formulario
-    $(document).on('submit', "#form-intervalo-mood", function(e) {
-        //console.log("Evento submit capturado...");
-        e.preventDefault(); // Evitar el envío normal del formulario
-
-        //console.log("Formulario enviado, manejando con AJAX...");
-
-        var fechaInicio = $("#fechaInicioMood").val();
-        var fechaFin = $("#fechaFinMood").val();
-
-        //console.log("Enviando solicitud AJAX...");
-        //console.log("Fecha Inicio: ", fechaInicio);
-        //console.log("Fecha Fin: ", fechaFin);
-
-        $.ajax({
-            url: 'models/procesarHistoricoMood.php',
-            type: 'POST',
-            data: {
-                fechaInicio: fechaInicio,
-                fechaFin: fechaFin
-            },
-            success: function(response) {
-                console.log("Respuesta del servidor: ", response);
-
-                // Verificar si el contenido se está insertando correctamente
-                if (response.trim() === "") {
-                    console.error("La respuesta del servidor está vacía.");
-                } else {
-                    console.log("Contenido recibido, insertando en #historialMood.");
-                    $("#bloqueIntervaloMood").addClass("d-none");
-                    $("#historialMood").html(response);
-
-                    // Esperar un poco para asegurar que el DOM se actualiza
-                    setTimeout(function() {
-                       // console.log("Contenido después de la inserción:", $("#historialMood").html());
-                        $("#historialMood").removeClass("d-none"); // Asegurarse de que el div sea visible
 
                         // Ejecutar el script de la gráfica después de la inserción
                         if (document.getElementById('moodChart')) {
-                            inicializarGrafica();
+                            inicializarGrafica(response.labels, response.data);
                         } else {
                             console.error("Elemento moodChart no encontrado en el DOM.");
                         }
                     }, 500); // Ajusta este tiempo según sea necesario
 
                     console.log("Contenido insertado en #historialMood.");
+                } else {
+                    console.error("La respuesta del servidor no contiene datos.");
                 }
             },
             error: function(xhr, status, error) {
@@ -1267,26 +1150,33 @@ $(document).ready(function() {
                 $("#historialMood").html("<p class='error'>Hubo un problema al obtener los datos. Por favor, inténtalo de nuevo.</p>");
             }
         });
-
-        //console.log("Solicitud AJAX enviada...");
     });
 
-    function inicializarGrafica() {
-        // Verificar si el elemento moodChart está disponible en el DOM
+    function inicializarGrafica(labels, data) {
+        console.log("Inicializando gráfica con los siguientes datos:");
+        console.log("Labels: ", labels);
+        console.log("Data: ", data);
+
         var ctx = document.getElementById('moodChart').getContext('2d');
         var moodChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Feliz','Entusiasta','Estresado','Agradecido','Motivado'],
+                labels: labels,
                 datasets: [{
-                    data: [3,2,1,1,2],
+                    data: data,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
                         'rgba(255, 206, 86, 0.2)',
                         'rgba(75, 192, 192, 0.2)',
                         'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'  // Se pueden agregar más colores si es necesario
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
@@ -1294,7 +1184,13 @@ $(document).ready(function() {
                         'rgba(255, 206, 86, 1)',
                         'rgba(75, 192, 192, 1)',
                         'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'  // Se pueden agregar más colores si es necesario
                     ],
                     borderWidth: 1
                 }]
@@ -1326,6 +1222,7 @@ $(document).ready(function() {
         });
     }
 });
+
 
 //formulario de contacto
 $(document).ready(function() {

@@ -30,6 +30,7 @@ $hashPassword = $usuario['password'];
 $apellidosUsuario=$usuario['apellidos'];
 $emailUsuario=$usuario['email'];
 $nombreUser=$usuario['nombre'];
+$idUsuario = $usuario['id'];
 
 // Verificar si la contraseña proporcionada coincide con la almacenada en la base de datos
 if (!password_verify($_POST['password'], $hashPassword)) {
@@ -44,6 +45,8 @@ $_SESSION['usuario'] = $nombreUsuario;
 $_SESSION['apellidos'] = $apellidosUsuario;
 $_SESSION['email'] = $emailUsuario;
 $_SESSION['nombre'] = $nombreUser;
+$_SESSION['idUsuario'] = $idUsuario;
+
 
 // Redirigir a otra página después de iniciar sesión
 header("Location: ../dashboard.php");

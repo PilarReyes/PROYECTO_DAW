@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Inicializar MetisMenu
+    $('#menu').metisMenu();
+
+    // Manejar la expansión y colapso del sidebar
     var arrows = document.querySelectorAll('.has-arrow');
     arrows.forEach(function(arrow) {
         arrow.addEventListener('click', function () {
@@ -8,5 +12,4 @@ document.addEventListener("DOMContentLoaded", function () {
             submenu.style.display = expanded ? 'none' : 'block';
         });
     });
-
 });

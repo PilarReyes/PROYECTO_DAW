@@ -14,7 +14,7 @@ html, body {
 }
 
 #pic{
-  border-radius: 50%;
+  border-radius: 30%;
 }
 main{
   background-color:#F4F4FD;
@@ -109,10 +109,12 @@ main{
   background: none;
   border: none;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 15px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   display: block;
+  padding: 8px 15px; /* Ajustar el espaciado interno */
+  white-space: nowrap;
 }
 
 .metismenu a {
@@ -128,6 +130,12 @@ main{
 .metismenu button:hover, .metismenu a:hover {
   background-color: #f0f0f0;
 }
+
+.metismenu li button:after,
+.metismenu li a:after {
+    display: none !important;
+}
+
 
 
 main {
@@ -173,6 +181,20 @@ main {
 }
 
 
+#historialMood {
+  height: 500px;
+  width: 100%;
+}
+
+#animating-donut {
+  height: 100%;
+  width: 100%;
+}
+
+#moodChart {
+  height: 100%;
+  width: 100%;
+}
 
 .calendar-wrapper {
   font-family: Arial, sans-serif;

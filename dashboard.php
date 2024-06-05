@@ -19,7 +19,10 @@ if (!isset($_SESSION['usuario'])) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/metismenu/dist/metisMenu.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/metismenu"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 </head>
 <body>
     <header class="site-header">
@@ -30,14 +33,17 @@ if (!isset($_SESSION['usuario'])) {
             <div class="brand">
                 InnerSync - Sincronízate
             </div>
+            <button class="btn btn-primary d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
             <div class="user-actions">
                 <div class="dropdown header-profile2">
                     <a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
                         <div class="header-info2 d-flex align-items-center">
-                            <img id="pic" src="images/profile/<?= isset($_SESSION['nombre']) ? 'perfil2.png' : ''; ?>" alt="Profile Picture">
+                            <img id="pic" src="images/profile/<?= isset($_SESSION['nombre']) ? 'perfil1.png' : ''; ?>" alt="Profile Picture">
                             <div class="d-flex align-items-center sidebar-info">
-                                <div id= "welcome">
-                                    <small  class="text-end font-w400">Bienvenid@</small>
+                                <div id="welcome">
+                                    <small class="text-end font-w400">Bienvenid@</small>
                                     <span class="font-w400 d-block"><?= isset($_SESSION['nombre']) ? $_SESSION['nombre'] : ''; ?></span>
                                 </div>
                                 <i class="fas fa-chevron-down"></i>
@@ -60,8 +66,7 @@ if (!isset($_SESSION['usuario'])) {
     </header>
     <div class="container-fluid">
         <div class="row">
-            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                <!-- Menú de navegación -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                 <ul class="metismenu" id="menu">
                     <li>
                         <button class="has-arrow" aria-expanded="false">
@@ -126,73 +131,68 @@ if (!isset($_SESSION['usuario'])) {
                             $fraseAleatoria = $frases[$indiceAleatorio];
                             echo $fraseAleatoria;
                             ?>
-                        </div> 
-                    </div>
-                    <!-- Contenedor del clima -->
-                    <div class="widget-box" id="weather-container">
-                            Temperatura en Torrevieja: 13.65°C
                         </div>
+                    </div>
+                    <div class="widget-box" id="weather-container">
+                        Temperatura en Torrevieja: 13.65°C
+                    </div>
                 </div>
-                <!-- Contenido del dashboard -->
                 <div class="calendarWr"></div>
                 <div class="dashboard-container">
                     <div id="calendar"></div>
+                </div>
             </main>
         </div>
     </div>
-   
     <footer id="footer" class="footer mt-auto py-3 bg-light">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 d-flex align-items-center justify-content-start mb-3 mb-md-0">
-                <div class="social-icons">
-                    <a href="https://www.facebook.com" target="_blank">
-                        <img src="images/icons/facebook.png" alt="Facebook" class="social-icon">
-                    </a>
-                    <a href="https://www.twitter.com" target="_blank">
-                        <img src="images/icons/gorjeo.png" alt="Twitter" class="social-icon">
-                    </a>
-                    <a href="https://www.instagram.com" target="_blank">
-                        <img src="images/icons/instagram.png" alt="Instagram" class="social-icon">
-                    </a>
-                    <a href="https://www.tiktok.com" target="_blank">
-                        <img src="images/icons/tik-tok.png" alt="TikTok" class="social-icon">
-                    </a>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 d-flex align-items-center justify-content-start mb-3 mb-md-0">
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com" target="_blank">
+                            <img src="images/icons/facebook.png" alt="Facebook" class="social-icon">
+                        </a>
+                        <a href="https://www.twitter.com" target="_blank">
+                            <img src="images/icons/gorjeo.png" alt="Twitter" class="social-icon">
+                        </a>
+                        <a href="https://www.instagram.com" target="_blank">
+                            <img src="images/icons/instagram.png" alt="Instagram" class="social-icon">
+                        </a>
+                        <a href="https://www.tiktok.com" target="_blank">
+                            <img src="images/icons/tik-tok.png" alt="TikTok" class="social-icon">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contactModal">
+                        <i class="fas fa-envelope"></i> Contáctanos
+                    </button>
+                </div>
+                <div class="col-md-4 d-flex align-items-center justify-content-end">
+                    <span class="custom-text">© 2024 InnerSync. Todos los derechos reservados.</span>
                 </div>
             </div>
-            <div class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contactModal">
-                    <i class="fas fa-envelope"></i> Contáctanos
-                </button>
-            </div>
-            <div class="col-md-4 d-flex align-items-center justify-content-end">
-                <span class="custom-text">© 2024 InnerSync. Todos los derechos reservados.</span>
-            </div>
         </div>
-    </div>
-</footer>
-
- 
-<?php
-include 'modals/modalTareaMod.php';
-include 'modals/modalTareaEli.php';
-include 'modals/modalEventoMod.php';
-include 'modals/modalEventoEli.php';
-include 'modals/modalFechaEspecialMod.php';
-include 'modals/modalFechaEspecialEli.php';
-include 'modals/modalHabitoEli.php';
-include 'modals/modalFooter.php';
-?>
-
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="js/dashboard.js"></script>
-<script src="js/calendar.js"></script>
-<script src="js/dashboard_container.js"></script>
-<script src="js/weather.js"></script>
-<script src="js/thanksContainer.js"></script>
-<script src="js/customHook.js?<?=date("YmdHis");?>"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </footer>
+    <?php
+    include 'modals/modalTareaMod.php';
+    include 'modals/modalTareaEli.php';
+    include 'modals/modalEventoMod.php';
+    include 'modals/modalEventoEli.php';
+    include 'modals/modalFechaEspecialMod.php';
+    include 'modals/modalFechaEspecialEli.php';
+    include 'modals/modalHabitoEli.php';
+    include 'modals/modalFooter.php';
+    ?>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/dashboard_container.js"></script>
+    <script src="js/weather.js"></script>
+    <script src="js/thanksContainer.js"></script>
+    <script src="js/customHook.js?<?=date("YmdHis");?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
