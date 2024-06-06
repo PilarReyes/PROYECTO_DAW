@@ -48,17 +48,15 @@ function comprobarLogin($usuario)
 function crearTarea($titulo, $descripcion, $fecha, $prioridad, $estado) {
 
     $idUsuario = $_SESSION['idUsuario'];
-
     $consulta = "INSERT INTO tareas (titulo, descripcion, fecha, prioridad, estado, idUsuario) VALUES ('$titulo', '$descripcion', '$fecha', '$prioridad', '$estado', '$idUsuario')";
-    
     $resultado = new MySQL($consulta);
-   
     return $resultado;
 }
 
 
 function obtenerTareas() {
-    $consulta = "SELECT tareas.* FROM tareas LEFT JOIN usuarios ON usuarios.id = tareas.idUsuario WHERE usuarios.email = '{$_SESSION['email']}'";
+    $idUsuario = $_SESSION['idUsuario'];
+    $consulta = "SELECT * FROM tareas WHERE idUsuario = '$idUsuario'";
     $resultado = new MySQL($consulta);
     return $resultado->datos;
 }
@@ -74,41 +72,32 @@ function obtenerTareaPorId($id_tarea) {
 }
 
 function eliminarTarea($id_tarea) {
-    // Consulta SQL para eliminar la tarea con el ID especificado
     $consulta = "DELETE FROM tareas WHERE id = $id_tarea";
-    
-    // Ejecutar la consulta y obtener el resultado
     $resultado = new MySQL($consulta);
-    
-    // Verificar si se realizó correctamente
+
     if ($resultado->getError()) {
-        // Error al ejecutar la consulta, mostrar mensaje de error
         echo "Error al eliminar la tarea con ID: $id_tarea. Detalles: " . $resultado->getError();
         return false;
     } else {
-        // La tarea se eliminó correctamente, devolver verdadero
         return true;
     }
 }
 
 function modificarTarea($id_tarea, $titulo, $descripcion, $fecha, $estado, $prioridad) {
     $consulta = "UPDATE tareas SET titulo = '$titulo', descripcion = '$descripcion', fecha = '$fecha', estado = '$estado', prioridad = '$prioridad' WHERE id = '$id_tarea'";
-    //echo "Consulta SQL: $consulta<br>"; // Mensaje de depuración
     $resultado = new MySQL($consulta);
     if ($resultado->getError()) {
         echo "Error al ejecutar la consulta: " . $resultado->getError() . "<br>";
-        return false; // Devolver false si hay un error
+        return false;
     }
     else {
-        return true; // Devolver true si la consulta se ejecuta correctamente
+        return true; 
     }
 }
 
 
 function crearEvento($nombre, $descripcion, $fecha_inicio, $fecha_fin, $ubicacion) {
-
     $idUsuario = $_SESSION['idUsuario'];
-
     $consulta = "INSERT INTO eventos (nombre, descripcion, fecha_inicio, fecha_fin, ubicacion, idUsuario) VALUES ('$nombre', '$descripcion', '$fecha_inicio', '$fecha_fin', '$ubicacion', '$idUsuario')";
     $resultado = new MySQL($consulta);
     return $resultado;
@@ -116,10 +105,12 @@ function crearEvento($nombre, $descripcion, $fecha_inicio, $fecha_fin, $ubicacio
 
 
 function obtenerEventos() {
-    $consulta = "SELECT eventos.* FROM eventos LEFT JOIN usuarios ON usuarios.id = eventos.idUsuario WHERE usuarios.email = '{$_SESSION['email']}'";
+    $idUsuario = $_SESSION['idUsuario'];
+    $consulta = "SELECT * FROM eventos WHERE idUsuario = '$idUsuario'";
     $resultado = new MySQL($consulta);
     return $resultado->datos;
 }
+
 
 function obtenerEventoPorId($id_evento) {
     $consulta = "SELECT * FROM eventos WHERE id = " . intval($id_evento) . " LIMIT 1";
@@ -166,7 +157,6 @@ function obtenerEventosEspeciales() {
     $resultado = new MySQL($consulta);
     return $resultado->datos;
 }
-
 
 
 function obtenerEventoEspecialPorId($id_evento) {
@@ -359,6 +349,19 @@ function eliminarHabito($id) {
         // El habito se eliminó correctamente, devolver verdadero
         return true;
     }
+}
+function obtenerMood() {
+
+    $consulta = "SELECT DISTINCT estado_animo FROM moodtracker";
+    //echo "Consulta SQL: <pre>$consulta</pre>";
+    $mysql = new MySQL($consulta);
+
+    if ($mysql->getError()) {
+       
+        error_log("Error al obtener el historial de hábitos: " . $mysql->getError());
+        return [];
+    }
+    return $mysql->datos;
 }
 
 function verificarEstadoAnimoRegistrado() {
